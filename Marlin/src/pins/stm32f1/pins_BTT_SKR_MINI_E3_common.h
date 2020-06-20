@@ -137,7 +137,7 @@
 
   #elif ENABLED(ZONESTAR_LCD)                     // ANET A8 LCD Controller - Must convert to 3.3V - CONNECTING TO 5V WILL DAMAGE THE BOARD!
 
-    #error "CAUTION! ZONESTAR_LCD requires wiring modifications. See 'pins_BTT_SKR_MINI_E3.h' for details. Comment out this line to continue."
+    #error "CAUTION! ZONESTAR_LCD requires wiring modifications. See 'pins_BTT_SKR_MINI_E3_common.h' for details. Comment out this line to continue."
 
     #define LCD_PINS_RS             EXPA1_05_PIN
     #define LCD_PINS_ENABLE         EXPA1_09_PIN
@@ -177,6 +177,48 @@
   #endif
 
 #endif // HAS_SPI_LCD
+
+#if BOTH(TOUCH_UI_FTDI_EVE, LCD_FYSETC_TFT81050)
+
+  #error "CAUTION! LCD_FYSETC_TFT81050 requires wiring modifications. See 'pins_BTT_SKR_MINI_E3_common.h' for details. Comment out this line to continue."
+
+  /** FYSETC TFT TFT81050 display pinout
+   *
+   *               Board                                      Display
+   *               _____                                       _____
+   *           5V | 1 2 | GND                (SPI1-MISO) MISO | 1 2 | SCK   (SPI1-SCK)
+   * (FREE)   PB7 | 3 4 | PB8  (LCD_CS)      (PA9)  MOD_RESET | 3 4 | SD_CS (PA10)
+   * (FREE)   PB9 | 5 6   PA10 (SD_CS)       (PB8)     LCD_CS | 5 6   MOSI  (SPI1-MOSI)
+   *        RESET | 7 8 | PA9  (MOD_RESET)   (PB5)     SD_DET | 7 8 | RESET
+   * (BEEPER) PB6 | 9 10| PB5  (SD_DET)                   GND | 9 10| 5V
+   *               -----                                       -----
+   *                EXP1                                        EXP1
+   *
+   * Needs custom cable:
+   *
+   *    Board   Adapter   Display
+   *           _________
+   *   EXP1-1 ----------- EXP1-10
+   *   EXP1-2 ----------- EXP1-9
+   *   SPI1-4 ----------- EXP1-6
+   *   EXP1-4 ----------- EXP1-5
+   *   SPI1-3 ----------- EXP1-2
+   *   EXP1-6 ----------- EXP1-4
+   *   EXP1-7 ----------- EXP1-8
+   *   EXP1-8 ----------- EXP1-3
+   *   SPI1-1 ----------- EXP1-1
+   *  EXP1-10 ----------- EXP1-7
+   *
+   */
+
+  #define CLCD_SPI_BUS 1                          // SPI1 connector
+
+  #define BEEPER_PIN                      EXP1_9
+
+  #define CLCD_MOD_RESET                    PA9
+  #define CLCD_SPI_CS                       PB8
+
+#endif // TOUCH_UI_FTDI_EVE && LCD_FYSETC_TFT81050
 
 //
 // SD Support
