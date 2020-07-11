@@ -3262,7 +3262,7 @@
 /**
  * Analog Joystick(s)
  */
-#define JOYSTICK
+// #define JOYSTICK
 #if ENABLED(JOYSTICK)
   #define JOY_X_PIN    P0_25  // RAMPS: Suggested pin A5  on AUX2
   #define JOY_Y_PIN    P0_24  // RAMPS: Suggested pin A10 on AUX2
