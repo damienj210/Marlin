@@ -29,7 +29,7 @@
 #define DISABLE_JTAG
 
 // Ignore temp readings during development.
-//#define BOGUS_TEMPERATURE_GRACE_PERIOD 2000
+//#define BOGUS_TEMPERATURE_GRACE_PERIOD    2000
 
 #if EITHER(NO_EEPROM_SELECTED, FLASH_EEPROM_EMULATION)
   #define FLASH_EEPROM_EMULATION
@@ -98,8 +98,13 @@
 //
 // USB connect control
 //
-#define USB_CONNECT_PIN                     PC13
-#define USB_CONNECT_INVERTING false
+#ifdef SKR_MINI_E3_V2
+  #define USB_CONNECT_PIN                   PA14
+#else
+  #define USB_CONNECT_PIN                   PC13
+#endif
+
+#define USB_CONNECT_INVERTING              false
 
 #define SD_DETECT_PIN                       PC4
 
@@ -213,7 +218,7 @@
    *
    */
 
-  #define CLCD_SPI_BUS 1                          // SPI1 connector
+  #define CLCD_SPI_BUS                         1  // SPI1 connector
 
   #define BEEPER_PIN                      EXP1_9
 
@@ -231,5 +236,16 @@
   #define SDCARD_CONNECTION              ONBOARD
 #endif
 
-#define ON_BOARD_SPI_DEVICE 1                     // SPI1
+#if SD_CONNECTION_IS(ONBOARD)
+  #define SD_DETECT_PIN                     PC4
+#endif
+
+#if BOTH(TOUCH_UI_FTDI_EVE, LCD_FYSETC_TFT81050) && SD_CONNECTION_IS(LCD)
+  #define SD_DETECT_PIN                     PB5
+  #define SS_PIN                            PA10
+#elif SD_CONNECTION_IS(CUSTOM_CABLE)
+  #error "SD CUSTOM_CABLE is not compatible with SKR Mini E3."
+#endif
+
+#define ON_BOARD_SPI_DEVICE                    1  // SPI1
 #define ONBOARD_SD_CS_PIN                   PA4   // Chip select for "System" SD card
